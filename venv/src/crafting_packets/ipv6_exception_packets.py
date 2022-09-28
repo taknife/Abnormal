@@ -10,3 +10,25 @@
 Desc: 
 ---------------------- End -----------------------
 """
+
+from scapy.all import *
+
+
+def ipv6_winnuke():
+    pass
+
+
+def ipv6_land_base():
+    pass
+
+
+def ipv6_tcp_flag():
+    pass
+
+
+def ipv6_fraggle():
+    pass
+
+
+def ipv6_ip_spoof():
+    pass

