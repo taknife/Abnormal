@@ -1,22 +1,12 @@
 # #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Project -> @File : Abnormal -> jolt2.py
+# @Project -> @File : Abnormal -> __init__.py.py
 # @Author   : Taknife
 # @IDE      : PyCharm
-# @Time     : 2022/9/26 15:20
+# @Time     : 2022/9/28 14:34
 
 """
 -------------------- Function --------------------
 Desc: 
 ---------------------- End -----------------------
 """
-
-from scapy.all import *
-
-
-def crafting_packets():
-    pass
-
-
-if __name__ == '__main__':
-    pass
