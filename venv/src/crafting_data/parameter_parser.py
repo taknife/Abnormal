@@ -15,6 +15,35 @@ Desc:
 import argparse
 
 
+def custom_parser():
+    pass
+
+
+def ipv4_land_base_parser():
+    parser = argparse.ArgumentParser(description='Land-Base Exception Packet Attack.')
+    parser.add_argument("-m", "--smac", type=str, metavar="[XX:XX:XX:XX:XX:XX]", help="Construct source MAC address.")
+    parser.add_argument("-d", "--dst", type=str, metavar="[xxx.xxx.xxx.xxx]", help="Target IP address.")
+    parser.add_argument("--hide-mac", action="store_true", help="Hide source MAC address.")
+    parser.add_argument("-n", "--num", type=int, metavar="number", help="Number of packets sent.")
+    parser.add_argument("-t", "--time", type=int, metavar="second", default=0,
+                        help="Time interval between sending request packets.")
+    args = parser.parse_args()
+    src = args.smac
+    dst = args.dst
+    num = args.num
+    tim = args.time
+    ver = ""
+    if args.hide_src:
+        src = hide_src_ip()
+    if args.version:
+        ver = "Version: v1.0"
+    return smac, dst, num, tim, ver
+
+
+def ipv4_tear_drop_parser():
+    pass
+
+
 def auto_parser():
     parser = argparse.ArgumentParser(
         prog="abnormal",
@@ -48,31 +77,3 @@ def auto_parser():
     fraggle = args.fraggle
     custom = args.custom
     return pingofdeath, landbase, teardrop, tcpflag, winnuke, smurf, ipoption, ipspoof, jolt2, tcpsack, fraggle, custom
-
-def custom_parser():
-    pass
-
-
-def ipv4_land_base_parser():
-    parser = argparse.ArgumentParser(description='Land-Base Exception Packet Attack.')
-    parser.add_argument("-m", "--smac", type=str, metavar="[XX:XX:XX:XX:XX:XX]", help="Construct source MAC address.")
-    parser.add_argument("-d", "--dst", type=str, metavar="[xxx.xxx.xxx.xxx]", help="Target IP address.")
-    parser.add_argument("--hide-mac", action="store_true", help="Hide source MAC address.")
-    parser.add_argument("-n", "--num", type=int, metavar="number", help="Number of packets sent.")
-    parser.add_argument("-t", "--time", type=int, metavar="second", default=0,
-                        help="Time interval between sending request packets.")
-    args = parser.parse_args()
-    src = args.smac
-    dst = args.dst
-    num = args.num
-    tim = args.time
-    ver = ""
-    if args.hide_src:
-        src = hide_src_ip()
-    if args.version:
-        ver = "Version: v1.0"
-    return smac, dst, num, tim, ver
-
-
-def ipv4_tear_drop_parser():
-    pass
