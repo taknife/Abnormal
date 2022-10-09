@@ -15,6 +15,20 @@ Desc:
 import argparse
 
 
+def show_parser():
+    parser = argparse.ArgumentParser(
+        add_help=False,
+        description="View network card information."
+    )
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("--inter", action="store_true", help="show interface")
+    group.add_argument("--route", type=int, choices=[4, 6], help="show route (ipv4/ipv6)")
+    args = parser.parse_args()
+    inter = args.inter
+    route = args.route
+    return inter, route
+
+
 def custom_parser():
     pass
 
@@ -32,25 +46,21 @@ def ipv4_land_base_parser():
     dst = args.dst
     num = args.num
     tim = args.time
-    ver = ""
-    if args.hide_src:
-        src = hide_src_ip()
-    if args.version:
-        ver = "Version: v1.0"
-    return smac, dst, num, tim, ver
+    return smac, dst, num, tim
 
 
 def ipv4_tear_drop_parser():
     pass
 
 
-def auto_parser():
+def module_parser():
     parser = argparse.ArgumentParser(
         prog="abnormal",
         usage=None,
         description="Exception package module:"
     )
     group = parser.add_mutually_exclusive_group()
+    group.add_argument("--show", action="store_true", help="View network card information.")
     group.add_argument("--ping-of-death", action="store_true", help="Construct ping of death attack packet. (ipv4)")
     group.add_argument("--land-base", action="store_true", help="Construct land base attack packet. (ipv4/ipv6)")
     group.add_argument("--tear-drop", action="store_true", help="Construct tear drop attack packet. (ipv4)")
@@ -64,6 +74,7 @@ def auto_parser():
     group.add_argument("--fraggle", action="store_true", help="Construct fraggle attack packet. (ipv6)")
     group.add_argument("--custom", action="store_true", help="Custom Package Structure. (ipv4/ipv6)")
     args = parser.parse_args()
+    show = args.show
     pingofdeath = args.ping_of_death
     landbase = args.land_base
     teardrop = args.tear_drop
@@ -76,4 +87,4 @@ def auto_parser():
     tcpsack = args.tcp_sack
     fraggle = args.fraggle
     custom = args.custom
-    return pingofdeath, landbase, teardrop, tcpflag, winnuke, smurf, ipoption, ipspoof, jolt2, tcpsack, fraggle, custom
+    return show, pingofdeath, landbase, teardrop, tcpflag, winnuke, smurf, ipoption, ipspoof, jolt2, tcpsack, fraggle, custom

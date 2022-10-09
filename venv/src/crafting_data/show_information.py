@@ -13,11 +13,12 @@ Desc:
 
 from scapy.all import conf
 
+
 def show_interface():
     print(conf.ifaces)
 
 
-def show_route( num ):
+def show_route(num):
     if num == 4:
         print(conf.route)
     elif num == 6:
