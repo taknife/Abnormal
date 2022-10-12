@@ -4,3 +4,4 @@ venv/Scripts
 venv/pyvenv.cfg
 venv/share
 venv/src/test.py
+venv/src/show_test.py

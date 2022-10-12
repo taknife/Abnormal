@@ -11,7 +11,7 @@ Desc:
 ---------------------- End -----------------------
 """
 
-from scapy.all import conf
+from scapy.all import conf, get_if_addr
 
 
 def show_interface():
@@ -26,3 +26,7 @@ def show_route(num):
     else:
         print("Wrong IP protocol version, select IPv4 or IPv6.")
         exit()
+
+
+def show_ip_address():
+    print(get_if_addr(conf.ifaces.dev_from_index(8)))

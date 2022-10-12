@@ -15,76 +15,39 @@ Desc:
 import argparse
 
 
-def show_parser():
-    parser = argparse.ArgumentParser(
-        add_help=False,
-        description="View network card information."
-    )
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument("--inter", action="store_true", help="show interface")
-    group.add_argument("--route", type=int, choices=[4, 6], help="show route (ipv4/ipv6)")
-    args = parser.parse_args()
-    inter = args.inter
-    route = args.route
-    return inter, route
+class moduleParser():
+    __key = None
+    __parser = None
+    __subparser = None
+    __land_base_subparser = None
+
+    def __init__(self):
+        self.__parser = argparse.ArgumentParser(
+            prog="abnormal",
+            usage=None,
+            # description="Exception package module:"
+        )
+        self.__subparser = self.__parser.add_subparsers(
+            help="Exception package module:"
+        )
+        self.__land_base_subparser = self.__subparser.add_parser("land-base", help="Construct land base attack message.")
 
 
-def custom_parser():
-    pass
+    # 解析器，模块构造器，根模块的建立
+    def module_parser(self):
+        # 主解析器（查看设备网卡信息）
+        group = self.__parser.add_mutually_exclusive_group()
+        group.add_argument("--inter", action="store_true", help="Show interface.")
+        group.add_argument("--route", type=int, choices=[4, 6], help="Show route ipv4/ipv6.")
 
+        # 构造land base攻击报文
+        self.land_base_parser()
 
-def ipv4_land_base_parser():
-    parser = argparse.ArgumentParser(description='Land-Base Exception Packet Attack.')
-    parser.add_argument("-m", "--smac", type=str, metavar="[XX:XX:XX:XX:XX:XX]", help="Construct source MAC address.")
-    parser.add_argument("-d", "--dst", type=str, metavar="[xxx.xxx.xxx.xxx]", help="Target IP address.")
-    parser.add_argument("--hide-mac", action="store_true", help="Hide source MAC address.")
-    parser.add_argument("-n", "--num", type=int, metavar="number", help="Number of packets sent.")
-    parser.add_argument("-t", "--time", type=int, metavar="second", default=0,
-                        help="Time interval between sending request packets.")
-    args = parser.parse_args()
-    src = args.smac
-    dst = args.dst
-    num = args.num
-    tim = args.time
-    return smac, dst, num, tim
+        args = self.__parser.parse_args()
+        return args
 
-
-def ipv4_tear_drop_parser():
-    pass
-
-
-def module_parser():
-    parser = argparse.ArgumentParser(
-        prog="abnormal",
-        usage=None,
-        description="Exception package module:"
-    )
-    group = parser.add_mutually_exclusive_group()
-    group.add_argument("--show", action="store_true", help="View network card information.")
-    group.add_argument("--ping-of-death", action="store_true", help="Construct ping of death attack packet. (ipv4)")
-    group.add_argument("--land-base", action="store_true", help="Construct land base attack packet. (ipv4/ipv6)")
-    group.add_argument("--tear-drop", action="store_true", help="Construct tear drop attack packet. (ipv4)")
-    group.add_argument("--tcp-flag", action="store_true", help="Construct tcp flag attack packet. (ipv4/ipv6)")
-    group.add_argument("--winnuke", action="store_true", help="Construct winnuke attack packet. (ipv4/ipv6)")
-    group.add_argument("--smurf", action="store_true", help="Construct smurf attack packet. (ipv4)")
-    group.add_argument("--ip-option", action="store_true", help="Construct ip option attack packet. (ipv4)")
-    group.add_argument("--ip-spoof", action="store_true", help="Construct ip option attack packet. (ipv4/ipv6)")
-    group.add_argument("--jolt2", action="store_true", help="Construct jolt2 attack packet. (ipv4)")
-    group.add_argument("--tcp-sack", action="store_true", help="Construct tcp sack attack packet. (ipv4)")
-    group.add_argument("--fraggle", action="store_true", help="Construct fraggle attack packet. (ipv6)")
-    group.add_argument("--custom", action="store_true", help="Custom Package Structure. (ipv4/ipv6)")
-    args = parser.parse_args()
-    show = args.show
-    pingofdeath = args.ping_of_death
-    landbase = args.land_base
-    teardrop = args.tear_drop
-    tcpflag = args.tcp_flag
-    winnuke = args.winnuke
-    smurf = args.smurf
-    ipoption = args.ip_option
-    ipspoof = args.ip_spoof
-    jolt2 = args.jolt2
-    tcpsack = args.tcp_sack
-    fraggle = args.fraggle
-    custom = args.custom
-    return show, pingofdeath, landbase, teardrop, tcpflag, winnuke, smurf, ipoption, ipspoof, jolt2, tcpsack, fraggle, custom
+    def land_base_parser(self):
+        self.__key = "land-base"
+        self.__land_base_subparser.add_argument("-d", "--dst", type=str, metavar="xxx.xxx.xxx.xxx", help="Target target address.")
+        self.__land_base_subparser.add_argument("-n", "--num", type=int, metavar="10", help="Number of packets sent.")
+        self.__land_base_subparser.add_argument("-t", "--time", type=int, metavar="1", help="Transmission interval between each data packet.")
