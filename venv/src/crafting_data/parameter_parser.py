@@ -15,7 +15,7 @@ Desc:
 import argparse
 
 
-class moduleParser():
+class ModuleParser():
     __parser = None
     __subparser = None
     __ping_of_death_subparser = None
@@ -60,8 +60,8 @@ class moduleParser():
     def module_parser(self):
         # 主解析器（查看设备网卡信息）
         group = self.__parser.add_mutually_exclusive_group()
-        group.add_argument("--inter", action="store_true", help="Show interface.")
-        group.add_argument("--route", type=int, choices=[4, 6], help="Show route ipv4/ipv6.")
+        group.add_argument("--inter", action="store_true", help="show interface.")
+        group.add_argument("--route", type=int, choices=[4, 6], help="show route ipv4/ipv6.")
         group.add_argument("--version", action="version", version='%(prog)s 1.0')
 
         # ping of death 解析器
@@ -98,9 +98,11 @@ class moduleParser():
 
     # land base攻击报文传参方法
     def land_base_parser(self):
-        self.__land_base_subparser.add_argument("-d", "--dst", type=str, metavar="xxx.xxx.xxx.xxx", help="Target target address.")
-        self.__land_base_subparser.add_argument("-n", "--num", type=int, metavar="10", help="Number of packets sent.")
-        self.__land_base_subparser.add_argument("-t", "--time", type=int, metavar="1", help="Transmission interval between each data packet.")
+        self.__land_base_subparser.add_argument("-i", "--int", type=int, metavar="(index)", required=True, help="Network card index value.")
+        self.__land_base_subparser.add_argument("-m", "--smac", type=str, metavar="XX:XX:XX:XX:XX:XX", help="MAC address of packet sending source.")
+        self.__land_base_subparser.add_argument("-d", "--dst", type=str, metavar="xxx.xxx.xxx.xxx", required=True, help="Target target address.")
+        self.__land_base_subparser.add_argument("-n", "--num", type=int, metavar="(number)", help="Number of packets sent.")
+        self.__land_base_subparser.add_argument("-t", "--time", type=int, metavar="(second)", help="Transmission interval between each data packet.")
 
 
     # tear drop攻击报文传参方法

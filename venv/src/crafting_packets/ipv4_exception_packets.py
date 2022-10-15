@@ -33,7 +33,7 @@ def ipv4_land_base(smac, target):
         dport = random.randint(1000, 65535),
         flags = "S"
     )
-    pkt = network_layer / transport_layer
+    pkt = data_link_layer / network_layer / transport_layer
     return pkt
 
 

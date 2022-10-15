@@ -30,3 +30,7 @@ def show_route(num):
 
 def show_ip_address():
     print(get_if_addr(conf.ifaces.dev_from_index(8)))
+
+
+def show_mac_address():
+    pass
