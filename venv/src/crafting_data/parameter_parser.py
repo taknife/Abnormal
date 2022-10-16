@@ -62,7 +62,8 @@ class ModuleParser():
         group = self.__parser.add_mutually_exclusive_group()
         group.add_argument("--inter", action="store_true", help="show interface.")
         group.add_argument("--route", type=int, choices=[4, 6], help="show route ipv4/ipv6.")
-        group.add_argument("--version", action="version", version='%(prog)s 1.0')
+        group.add_argument("--version", action="version", version='%(prog)s beta v1.0')
+        # group.add_argument("--version", action="version", version='%(prog)s 1.0')
 
         # ping of death 解析器
         self.ping_of_death_parser()
@@ -74,6 +75,8 @@ class ModuleParser():
         self.tcp_flag_parser()
         # winnuke 解析器
         self.winnuke_parser()
+        # smurf 解析器
+        self.smurf_parser()
         # ip option 解析器
         self.ip_option_parser()
         # ip spoof 解析器
@@ -98,11 +101,13 @@ class ModuleParser():
 
     # land base攻击报文传参方法
     def land_base_parser(self):
-        self.__land_base_subparser.add_argument("-i", "--int", type=int, metavar="(index)", required=True, help="Network card index value.")
-        self.__land_base_subparser.add_argument("-m", "--smac", type=str, metavar="XX:XX:XX:XX:XX:XX", help="MAC address of packet sending source.")
+        group = self.__land_base_subparser.add_mutually_exclusive_group()
+        self.__land_base_subparser.add_argument("-i", "--int", type=int, metavar="index", required=True, help="Network card index value.")
         self.__land_base_subparser.add_argument("-d", "--dst", type=str, metavar="xxx.xxx.xxx.xxx", required=True, help="Target target address.")
-        self.__land_base_subparser.add_argument("-n", "--num", type=int, metavar="(number)", help="Number of packets sent.")
-        self.__land_base_subparser.add_argument("-t", "--time", type=int, metavar="(second)", help="Transmission interval between each data packet.")
+        group.add_argument("-m", "--smac", type=str, metavar="XX:XX:XX:XX:XX:XX", help="MAC address of packet sending source.")
+        group.add_argument("--hide-srcmac", action="store_true", help="Hide Source MAC Address.")
+        self.__land_base_subparser.add_argument("-n", "--num", type=int, metavar="number", help="Number of packets sent.")
+        self.__land_base_subparser.add_argument("-t", "--time", type=float, metavar="second", help="Transmission interval between each data packet.")
 
 
     # tear drop攻击报文传参方法
@@ -114,20 +119,40 @@ class ModuleParser():
 
     # tcp flag攻击报文传参方法
     def tcp_flag_parser(self):
-        pass
-        # self.__tcp_flag_subparser.add_argument()
-        # self.__tcp_flag_subparser.add_argument()
+        group_1 = self.__tcp_flag_subparser.add_mutually_exclusive_group()
+        group_2 = self.__tcp_flag_subparser.add_mutually_exclusive_group()
+        self.__tcp_flag_subparser.add_argument("-i", "--int", type=int, metavar="index", required=True, help="Network card index value.")
+        self.__tcp_flag_subparser.add_argument("-d", "--dst", type=str, metavar="xxx.xxx.xxx.xxx", required=True, help="Target target address.")
+        group_1.add_argument("-m", "--smac", type=str, metavar="XX:XX:XX:XX:XX:XX", help="MAC address of packet sending source.")
+        group_1.add_argument("--hide-srcmac", action="store_true", help="Hide Source MAC Address.")
+        group_2.add_argument("-s", "--src", type=str, metavar="xxx.xxx.xxx.xxx", help="Custom source IP address.")
+        group_2.add_argument("--hide-srcip", action="store_true", help="Hide Source IP Address.")
+        self.__tcp_flag_subparser.add_argument("-f", "--flags", choices=["F", "FR", "SU", "SR", "SF"], help="Configure abnormal TCP identification bit.")
+        self.__tcp_flag_subparser.add_argument("-n", "--num", type=int, metavar="number", help="Number of packets sent.")
+        self.__tcp_flag_subparser.add_argument("-t", "--time", type=float, metavar="second", help="Transmission interval between each data packet.")
         # self.__tcp_flag_subparser.add_argument()
 
 
     # winnuke攻击报文传参方法
     def winnuke_parser(self):
-        pass
+        group_1 = self.__winnuke_subparser.add_mutually_exclusive_group()
+        group_2 = self.__winnuke_subparser.add_mutually_exclusive_group()
+        self.__winnuke_subparser.add_argument("-i", "--int", type=int, metavar="index", required=True, help="Network card index value.")
+        self.__winnuke_subparser.add_argument("-d", "--dst", type=str, metavar="xxx.xxx.xxx.xxx", required=True, help="Target target address.")
+        group_1.add_argument("-m", "--smac", type=str, metavar="XX:XX:XX:XX:XX:XX", help="MAC address of packet sending source.")
+        group_1.add_argument("--hide-srcmac", action="store_true", help="Hide Source MAC Address.")
+        group_2.add_argument("-s", "--src", type=str, metavar="xxx.xxx.xxx.xxx", help="Custom source IP address.")
+        group_2.add_argument("--hide-srcip", action="store_true", help="Hide Source IP Address.")
+        self.__winnuke_subparser.add_argument("-n", "--num", type=int, metavar="number", help="Number of packets sent.")
+        self.__winnuke_subparser.add_argument("-t", "--time", type=float, metavar="second", help="Transmission interval between each data packet.")
 
 
     # smurf攻击报文传参方法
     def smurf_parser(self):
-        pass
+        self.__smurf_subparser.add_argument("-i", "--int", type=int, metavar="index", required=True, help="Network card index value.")
+        self.__smurf_subparser.add_argument("-d", "--dst", type=str, metavar="xxx.xxx.xxx.xxx[/xx]", required=True, help="Target target address. (Mask default 24)")
+        self.__smurf_subparser.add_argument("-n", "--num", type=int, metavar="number", help="Number of packets sent.")
+        self.__smurf_subparser.add_argument("-t", "--time", type=float, metavar="second", help="Transmission interval between each data packet.")
 
 
     # ip-option攻击报文传参方法
