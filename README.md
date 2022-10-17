@@ -39,6 +39,137 @@ Abnormal是一个数据包发包工具，实现常见的异常包攻击。
   git clone https://gitee.com/taknife/Abnormal.git
   ```
 
-* 123
+* 安装Python解释器，版本为3.8.10，注意安装过程中需要将路径加入环境变量
+
+* 进入到项目`venv/src`目录下，安装项目需要Python依赖库
+
+  ```bash
+  cd ./Abnormal/venv/src
+  pip install -r requirements.txt
+  ```
+
+  此处可使用国内源进行安装
+
+* 修改Python主文件首行注释`vim main.py`，删除第一行的第一个注释符`#`，修改后结果如下
+
+  ```bash
+  # 修改前
+  # #!/usr/bin/env python
+  # 修改后
+  #!/usr/bin/env python
+  ```
+
+* 为主文件赋予可执行权限
+
+  ```bash
+  chmod +x main.py
+  ```
+
+* 测试代码是否可以正常运行
+
+  ```bash
+  main.py -h
+  main.py --inter
+  ```
+
+  若可看到帮助信息，且能够成功识别网卡信息，证明工具正常执行
+
+  **帮助信息：**
+
+  ![image-20221017112516120](./image/image-20221017112516120.png)
+
+  **网卡信息：**
+
+  ![image-20221017112556590](./image/image-20221017112556590.png)
+
+* 创建软链接快捷方式至`/usr/bin`
+
+  ```bash
+  ln -s main.py /usr/bin/abnormal
+  ```
+
+* 测试查看工具帮助和网卡信息是否正常
+
+  ```bash
+  abnormal -h
+  abnormal --inter
+  ```
 
 #### 使用说明
+
+**工作模式**
+
+* 工具共分为两种模式，分别为主解析器和子解析器。
+  * 主解析器：可查看设备网卡信息、路由信息（IPv4和IPv6）、工具版本信息。
+  * 子解析器：又分为land-base、tcp-flag等12个模块其中，可单独查看每个模块的帮助信息。
+
+**快速上手**
+
+* 此处以land-base异常包攻击为例，快速生成异常数据包（其他异常包生成同理）
+
+* 运行方式：运行cmd，将abnormal.exe可执行文件拖入cmd命令行窗口。（注意：若以管理员运行cmd，则无法直接拖入，需要手动复制abnormal.exe文件路径）
+
+* 首先查看工具帮助信息`-h/--help`，可以看到工具相关选项信息
+
+  ```bash
+  abnormal.exe -h
+  ```
+
+  ![image-20221017121237726](./image/image-20221017121237726.png)
+
+  主解析器选项简介：
+
+  * `-h/--help`，查看主解析器帮助信息
+  * `--inter`，查看本地设备网卡信息
+  * `--route`，查看本地设备路由信息（IPv4 / IPv6）
+  * `--version`，查看工具版本信息
+
+* 查看设备网卡信息`--inter`，选择发包网卡
+
+  ```bash
+  abnormal.exe --inter
+  ```
+
+  ![image-20221017122425888](./image/image-20221017122425888.png)
+
+  * Index：网卡索引
+  * Name：网卡名
+  * MAC：网卡MAC地址
+  * IPv4：网卡配置的IPv4地址
+  * IPv6：网卡配置的IPv6地址
+
+* 确认所需要发包的网卡索引值，此处为12。
+
+* 进入land-base模块，查看land-base解析器帮助信息
+
+  ```bash
+  abnormal.exe land-base -h
+  ```
+
+  ![image-20221017122740280](./image/image-20221017122740280.png)
+
+  注意：每个模块中均有两个必选选项，`-i`选择网卡（后面接网卡索引值），`-d`攻击目标主机的IP
+
+* 根据帮助信息提示，向目标靶机发送攻击报文。
+
+  ```bash
+  abnormal.exe land-base -i 12 -d 192.168.15.10 -n 10
+  ```
+
+  此处`-n`是限制发送数据包的个数，限制发送10个数据包。可选项，若不填默认无限发送。
+
+* 确认攻击后，工具会返回命令行已发送数据包的构造详细信息。
+
+  ![image-20221017123414950](./image/image-20221017123414950.png)
+
+* 后面还会显示发包个数，以及告警信息。
+
+  ![image-20221017123508317](./image/image-20221017123508317.png)
+
+  注意：此处告警主要是目标靶机在此环境中并不存在，因此找不到目标靶机的相关ARP和路由信息
+
+* 攻击完成
+
+#### 更新日志
+
+* [2022/10/17 11:30:00] 已完成abnormal异常包攻击工具的框架以及主体部分，目前可自动构造4种攻击报文。分别为land-base、tcp-flag、winnuke、smurf。已推出第一个测试版本abnormal beta v1.0。
