@@ -18,10 +18,27 @@ Abnormal是一个数据包发包工具，实现常见的异常包攻击。
 
 #### 软件架构
 
-* 软件主要采用
+* 软件主要采用Python 3.8.10进行编写
+* 数据包构造方案主要采用scapy库
+* 工具共可自动构造11种异常攻击数据包，同时也可自定义构造数据包。
 
 #### 安装教程
 
+**Windows**
 
+* 使用前需要安装Npcap或WinPcap（建议使用最新Npcap），工具依赖此程序进行识别网卡和发送数据包。
+  * Npcap：https://npcap.com/
+  * WinPcap：https://www.winpcap.org/
+* 进入项目`venv/src/dist`目录下，下载abnormal.exe文件即可，此方式无需安装Python环境和相关Python依赖库。
+
+**Linux**
+
+* 克隆项目至本地
+
+  ```bash
+  git clone https://gitee.com/taknife/Abnormal.git
+  ```
+
+* 123
 
 #### 使用说明
