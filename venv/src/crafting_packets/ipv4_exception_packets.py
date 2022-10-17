@@ -77,6 +77,7 @@ def ipv4_winnuke(smac, src, dst):
         dst = dst
     )
     transport_layer = TCP(
+        dport = 53,
         flags = "U"
     )
     pkt = data_link_layer / network_layer / transport_layer
