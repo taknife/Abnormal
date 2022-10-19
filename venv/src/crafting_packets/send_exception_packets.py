@@ -28,3 +28,26 @@ def infinite_packets(pkt, tim, net):
         sendp(pkt, inter=tim, count=100000, iface=net)
     else:
         sendp(pkt, inter=0, count=100000, iface=net)
+
+
+def tear_drop_send(pkt1, pkt2, num, net, tim):
+    if tim:
+        if not num:
+            while True:
+                sendp(pkt1, inter=tim, count=1, iface=net)
+                sendp(pkt2, inter=tim, count=1, iface=net)
+        else:
+            for i in range(num):
+                sendp(pkt1, inter=tim, count=1, iface=net)
+                sendp(pkt2, inter=tim, count=1, iface=net)
+    else:
+        tim = 0
+        if not num:
+            while True:
+                sendp(pkt1, inter=tim, count=1, iface=net)
+                sendp(pkt2, inter=tim, count=1, iface=net)
+        else:
+            for i in range(num):
+                sendp(pkt1, inter=tim, count=1, iface=net)
+                sendp(pkt2, inter=tim, count=1, iface=net)
+

