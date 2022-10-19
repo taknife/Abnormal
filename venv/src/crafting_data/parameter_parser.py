@@ -62,7 +62,7 @@ class ModuleParser():
         group = self.__parser.add_mutually_exclusive_group()
         group.add_argument("--inter", action="store_true", help="show interface.")
         group.add_argument("--route", type=int, choices=[4, 6], help="show route ipv4/ipv6.")
-        group.add_argument("--version", action="version", version='%(prog)s beta v1.0')
+        group.add_argument("--version", action="version", version='%(prog)s beta v1.1')
         # group.add_argument("--version", action="version", version='%(prog)s 1.0')
 
         # ping of death 解析器
@@ -120,12 +120,11 @@ class ModuleParser():
         group_1.add_argument("--hide-srcmac", action="store_true", help="Hide Source MAC Address.")
         group_2.add_argument("-s", "--src", type=str, metavar="xxx.xxx.xxx.xxx", help="Custom source IP address.")
         group_2.add_argument("--hide-srcip", action="store_true", help="Hide Source IP Address.")
-        # self.__tear_drop_subparser.add_argument("-l", "--flags", type=int, choices=[0, 1], default=0, help="Configure whether IP is fragmented.")
         self.__tear_drop_subparser.add_argument("-r", "--frag", type=int, metavar="offset", help="Configure IP partition offset.")
         self.__tear_drop_subparser.add_argument("-p", "--proto", type=int, choices=[1, 6, 17], help="Select upper layer protocol.")
         self.__tear_drop_subparser.add_argument("-a", "--data", type=int, default=1480, metavar="size", help="Select the sending packet size.")
-        self.__tear_drop_subparser.add_argument("-n", "--num", type=int, metavar="number", help="Number of packets sent.")
-        self.__tear_drop_subparser.add_argument("-t", "--time", type=float, metavar="second", help="Transmission interval between each data packet.")
+        self.__tear_drop_subparser.add_argument("-n", "--num", type=int, metavar="number", default=1, help="Number of packets sent.")
+        self.__tear_drop_subparser.add_argument("-t", "--time", type=float, metavar="second", default=0, help="Transmission interval between each data packet.")
 
 
     # tcp flag攻击报文传参方法
