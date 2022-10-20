@@ -98,8 +98,23 @@ def ipv4_smurf(target_mac, target_ip, broadcast):
     return pkt
 
 
-def ipv4_ip_option():
-    pass
+def ipv4_ip_option(smac, src, dst):
+    data_link_layer = Ether(
+        src = smac
+    )
+    network_layer = IP(
+        src = src,
+        dst = dst,
+        options = [
+            IPOption_RR(
+                length = 7,
+                routers = ["0.0.0.0"]
+            ),
+            IPOption_EOL()
+        ]
+    ) / ICMP()
+    pkt = data_link_layer / network_layer
+    return pkt
 
 
 def ipv4_ip_spoof():
