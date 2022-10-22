@@ -96,7 +96,17 @@ class ModuleParser():
 
     # ping_of_death报文传参方法
     def ping_of_death_parser(self):
-        pass
+        group_1 = self.__ping_of_death_subparser.add_mutually_exclusive_group()
+        group_2 = self.__ping_of_death_subparser.add_mutually_exclusive_group()
+        self.__ping_of_death_subparser.add_argument("-i", "--int", type=int, metavar="index", required=True, help="Network card index value.")
+        self.__ping_of_death_subparser.add_argument("-d", "--dst", type=str, metavar="xxx.xxx.xxx.xxx", required=True, help="Target target address.")
+        group_1.add_argument("-m", "--smac", type=str, metavar="XX:XX:XX:XX:XX:XX", help="MAC address of packet sending source.")
+        group_1.add_argument("--hide-srcmac", action="store_true", help="Hide Source MAC Address.")
+        group_2.add_argument("-s", "--src", type=str, metavar="xxx.xxx.xxx.xxx", help="Custom source IP address.")
+        group_2.add_argument("--hide-srcip", action="store_true", help="Hide Source IP Address.")
+        # self.__ping_of_death_subparser.add_argument("-r", "--frag", type=int, metavar="offset", default=1480, help="Configure IP partition offset. (MAX = 1480)")
+        self.__ping_of_death_subparser.add_argument("-n", "--num", type=int, metavar="number", default=1, help="Number of packets sent.")
+        self.__ping_of_death_subparser.add_argument("-t", "--time", type=float, metavar="second", default=0, help="Transmission interval between each data packet.")
 
 
     # land base攻击报文传参方法

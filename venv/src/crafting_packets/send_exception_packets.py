@@ -51,3 +51,6 @@ def tear_drop_send(pkt1, pkt2, num, net, tim):
                 sendp(pkt1, inter=tim, count=1, iface=net)
                 sendp(pkt2, inter=tim, count=1, iface=net)
 
+
+def ping_of_death_send(pkt, tim, net):
+    sendp(pkt, inter=tim, count=1, iface=net)
