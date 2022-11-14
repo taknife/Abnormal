@@ -62,7 +62,7 @@ class ModuleParser():
         group = self.__parser.add_mutually_exclusive_group()
         group.add_argument("--inter", action="store_true", help="show interface.")
         group.add_argument("--route", type=int, choices=[4, 6], help="show route ipv4/ipv6.")
-        group.add_argument("--version", action="version", version='%(prog)s beta v1.2')
+        group.add_argument("--version", action="version", version='%(prog)s beta v1.3')
         # group.add_argument("--version", action="version", version='%(prog)s 1.0')
 
         # ping of death 解析器
